@@ -1,0 +1,5 @@
+name: Drupak Commerce 3
+type: module
+description: Drupak Commerce 3 custom module
+core: 8.x
+package: 'Drupak Commerce'

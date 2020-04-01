@@ -1,0 +1,235 @@
+<?php
+
+/**
+ * @file
+ */
+
+use Drupal\comment\CommentInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\commerce_product\Entity\ProductVariation;
+use Drupal\commerce_product\Entity\Product;
+use Drupal\commerce_price\Price;
+use Drupal\node\Entity\Node;
+use Drupal\commerce_funds\Entity\Transaction;
+
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_page_attachments().
+ *
+ * @param array $attachments
+ */
+function drupak_commerce_page_attachments(array &$attachments) {
+  $attachments['#attached']['library'][] = 'drupak_commerce/library';
+
+}
+
+/**
+ * @param $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ * @param $form_id
+ */
+
+
+function drupak_commerce_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // kint($form_id);
+  // kint($form['comment']['widget'][0]['status']['#default_value']);
+  if ($form_id == 'private_message_add_form') {
+
+    $value = \Drupal::request()->query->get('nid');
+    if (!empty($value)) {
+      // kint($value);
+      $node = Node::load($value);
+      $form['field_node_reference']['widget'][0]['target_id']['#default_value'] = $node;
+    }
+    $form['field_node_reference']['widget'][0]['target_id']['#attributes']['disabled'] = 'disabled';
+  }
+
+}
+
+/**
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ *
+ * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+ * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+ * @throws \Drupal\Core\Entity\EntityStorageException
+ */
+function drupak_commerce_entity_insert(EntityInterface $entity) {
+  if ($entity->bundle() == "article") {
+
+    $featured = $entity->get('field_featured')->getValue()[0]['value'];
+    if ($featured == 'yes') {
+      $nid = $entity->get('nid')->getValue()[0]['value'];
+      $price = $entity->get('field_product_price')->getValue()[0]['number'];
+      // $type = $entity->get('field_question_type')->getValue()[0]['value'];
+      $currency = $entity->get('field_product_price')
+        ->getValue()[0]['currency_code'];
+      $sku = rand(10, 100);
+
+      $variation_red_medium = ProductVariation::create([
+        'type' => 'default',
+        'sku' => $sku,
+        'price' => new Price($price, $currency),
+        // 'attribute_color' => 'Red',
+        //            'attribute_size' => 'Medium',
+      ]);
+      $variation_red_medium->save();
+
+      $product = Product::create([
+        'uid' => 1,
+        'type' => 'default',
+        'title' => t('Drupak v'),
+        'stores' => [1],
+        'variations' => [$variation_red_medium],
+        'field_question_reference_to' => [$nid],
+      ]);
+      $product->save();
+
+      $query = \Drupal::entityQuery('commerce_product')
+        ->condition('type', 'default')
+        ->condition('field_question_reference_to', $nid);
+      $p_info = $query->execute();
+
+      foreach ($p_info as $p) {
+        $pid = $p;
+      }
+
+      $productObj = Product::load($pid);
+      $product_variation_id = $productObj->get('variations')
+        ->getValue()[0]['target_id'];
+      $storeId = $productObj->get('stores')->getValue()[0]['target_id'];
+
+      $entity_manager = \Drupal::entityManager();
+
+      $variationobj = $entity_manager->getStorage('commerce_product_variation')
+        ->load($product_variation_id);
+      $store = $entity_manager->getStorage('commerce_store')->load($storeId);
+
+      $cart_manager = \Drupal::service('commerce_cart.cart_manager');
+      $cart_provider = \Drupal::service('commerce_cart.cart_provider');
+
+      $cart = $cart_provider->getCart('default', $store);
+      if (!$cart) {
+        $cart = $cart_provider->createCart('default', $store);
+      }
+
+      // Create new order item.
+      $order_item = $entity_manager->getStorage('commerce_order_item')->create([
+        'type' => 'default',
+        'purchased_entity' => (string) $product_variation_id,
+        'quantity' => 1,
+        'unit_price' => $variationobj->getPrice(),
+      ]);
+      $order_item->save();
+      $cart_manager->addOrderItem($cart, $order_item);
+
+      // $url = Url::fromUri('internal:/articles'); // choose a path
+      $id = $cart->id();
+      $path = "internal:/checkout/$id/order_information";
+      // Choose a path.
+      $url = Url::fromUri($path);
+      $destination = $url->toString();
+      // ksm($destination);
+      // We want to redirect user on login.
+      $response = new RedirectResponse($destination, 301);
+      $response->send();
+      return;
+      // setRedirect('commerce_checkout.form', ['commerce_order' => $cart->id()])
+    }else {
+      $id = $entity->id();
+      $nodeObject = Node::load($id);
+      // Comment 2 means open.
+      $nodeObject->set("comment", 2);
+      $nodeObject->save();
+    }
+  }
+}
+
+/**
+ * @param array $links
+ * @param \Drupal\comment\CommentInterface $entity
+ * @param array $context
+ */
+function drupak_commerce_comment_links_alter(array &$links, CommentInterface $entity, array &$context) {
+  // Unset the "Reply" link
+  if(isset($links['comment']['#links']['comment-approve'])) {
+    unset($links['comment']['#links']['comment-approve']);
+  }
+}
+
+/**
+ * @param $comment
+ */
+function drupak_commerce_comment_insert($comment) {
+
+  $node_id = $comment->get('entity_id')->getValue()[0]['target_id'];
+
+  $node = Node::load($node_id);
+  $nodeFeatured = $node->get('field_featured')->getValue()[0]['value'];
+  if($nodeFeatured == 'yes') {
+  $query = \Drupal::entityQuery('node')
+    ->condition('status', 1)
+    ->condition('field_question_from', $node_id)
+    ->condition('field_order_status', 'Progress');
+  $nodeInfo = $query->execute();
+
+  foreach($nodeInfo as $node) {
+    $date = strtotime(date('Y-m-d H:i:s'));
+    $d_date = gmdate('Y-m-d\TH:i:s', $date);
+    // Node Load
+    $assignNode = Node::load($node);
+    $assignNode->set('field_deliveryy', $d_date);
+    $assignNode->save();
+  }
+
+  // Comment 1 means close.
+  $node->set("comment", 1);
+  $node->save();
+} else {
+  $commentID = $comment->id();
+  // Comment load
+  $comment2 = \Drupal::entityTypeManager()->getStorage('comment')->load($commentID);
+  // Approve the loaded comment.
+  $comment2->set('status', 1);
+  $comment2->save();
+}
+}
+
+/**
+ * Implements hook_entity_update()
+ */
+function drupak_commerce_entity_update(Drupal\Core\Entity\EntityInterface $entity) {
+  if($entity->bundle() == 'comment') {
+    $comment_author = $entity->get('uid')->getValue()[0]['target_id'];
+    $node_id = $entity->get('entity_id')->getValue()[0]['target_id'];
+    // kint($node_id);
+    $nodeObject = Node::load($node_id);
+    $nodeFeatured = $nodeObject->get('field_featured')->getValue()[0]['value'];
+    $nodeIssuePrice = $nodeObject->get('field_product_price')->getValue()['0'];
+    $nodeAutherId = $nodeObject->get('uid')->getValue()[0]['target_id'];
+    if($nodeFeatured == 'yes') {
+      // Calculate the fee applied to the transaction.
+      $fee_applied = \Drupal::service('commerce_funds.fees_manager')->calculateTransactionFee($amount, $currency, 'transfer');
+       // Create a new transaction.
+       $transaction = Transaction::create([
+           'issuer' => $nodeAutherId,
+           'recipient' => $comment_author,
+           'type' => 'transfer',
+           'method' => 'internal',
+           'brut_amount' => $nodeIssuePrice['number'],
+           'net_amount' => $nodeIssuePrice['number'],
+           'fee' => $fee_applied['fee'],
+           'currency' => $nodeIssuePrice['currency_code'],
+           'status' => 'Completed',
+           'notes' => t('Programmtically Transaction paid for done service.'),
+         ]);
+        // Save the transaction to the db.
+        $transaction->save();
+
+        // Perform the transaction to update the differents balances.
+      \Drupal::service('commerce_funds.transaction_manager')->performTransaction($transaction);
+    }
+  }
+}
