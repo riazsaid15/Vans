@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * This module provides a block plugin with a simple jQuery coundown
+ *
+ * Author: Marcin Pajdzik
+ */

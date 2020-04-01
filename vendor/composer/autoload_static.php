@@ -83,6 +83,7 @@ class ComposerStaticInitc4ef3855b2e123de18b9554067810291
             'Symfony\\Bridge\\PhpUnit\\' => 23,
             'Seld\\PharUtils\\' => 15,
             'Seld\\JsonLint\\' => 14,
+            'Sainsburys\\Guzzle\\Oauth2\\' => 25,
         ),
         'P' => 
         array (
@@ -105,6 +106,10 @@ class ComposerStaticInitc4ef3855b2e123de18b9554067810291
             'GuzzleHttp\\Promise\\' => 19,
             'GuzzleHttp\\' => 11,
             'Goutte\\' => 7,
+        ),
+        'F' => 
+        array (
+            'Firebase\\JWT\\' => 13,
         ),
         'E' => 
         array (
@@ -311,6 +316,10 @@ class ComposerStaticInitc4ef3855b2e123de18b9554067810291
         array (
             0 => __DIR__ . '/..' . '/seld/jsonlint/src/Seld/JsonLint',
         ),
+        'Sainsburys\\Guzzle\\Oauth2\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sainsburys/guzzle-oauth2-plugin/src',
+        ),
         'Psr\\Log\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
@@ -350,6 +359,10 @@ class ComposerStaticInitc4ef3855b2e123de18b9554067810291
         'Goutte\\' => 
         array (
             0 => __DIR__ . '/..' . '/fabpot/goutte/Goutte',
+        ),
+        'Firebase\\JWT\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
         ),
         'Egulias\\EmailValidator\\' => 
         array (
