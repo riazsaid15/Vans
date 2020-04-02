@@ -152,50 +152,49 @@ function drupak_commerce_comment_links_alter(array &$links, CommentInterface $en
   }
 }
 
-///**
-// * @param $comment
-// *
-// * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-// * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-// * @throws \Drupal\Core\Entity\EntityStorageException
-// */
-//function drupak_commerce_comment_insert($comment) {
-//
-//  $node_id = $comment->get('entity_id')->getValue()[0]['target_id'];
-//
-//  $node = Node::load($node_id);
-//  $nodeFeatured = $node->get('field_featured')->getValue()[0]['value'];
-//  if ($nodeFeatured == 'yes') {
-//    $query = \Drupal::entityQuery('node')
-//      ->condition('status', 1)
-//      ->condition('field_question_from', $node_id)
-//      ->condition('field_order_status', 'Progress');
-//    $nodeInfo = $query->execute();
-//
-//    foreach ($nodeInfo as $node) {
-//      $date = strtotime(date('Y-m-d H:i:s'));
-//      $d_date = gmdate('Y-m-d\TH:i:s', $date);
-//      // Node Load
-//      $assignNode = Node::load($node);
-//      $assignNode->set('field_deliveryy', $d_date);
-//      $assignNode->save();
-//    }
-//
-//    // Comment 1 means close.
-//    $node->set("field_comment", 1);
-//    $node->save();
-//  }
-//  else {
-//    $commentID = $comment->id();
-//    // Comment load
-//    $comment2 = \Drupal::entityTypeManager()
-//      ->getStorage('field_comment')
-//      ->load($commentID);
-//    // Approve the loaded comment.
-//    $comment2->set('status', 1);
-//    $comment2->save();
-//  }
-//}
+/**
+* @param $comment
+*
+* @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+* @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+* @throws \Drupal\Core\Entity\EntityStorageException
+*/
+function drupak_commerce_comment_insert($comment) {
+
+ $node_id = $comment->get('entity_id')->getValue()[0]['target_id'];
+
+ $node = Node::load($node_id);
+ $nodePaid = $node->get('field_paid')->getValue()[0]['value'];
+ if ($nodePaid == 'yes') {
+   $query = \Drupal::entityQuery('node')
+     ->condition('status', 1)
+     ->condition('field_question_from', $node_id)
+     ->condition('field_order_status', 'Progress');
+   $nodeInfo = $query->execute();
+
+   foreach ($nodeInfo as $node) {
+     $date = strtotime(date('Y-m-d H:i:s'));
+     $d_date = gmdate('Y-m-d\TH:i:s', $date);
+     // Node Load
+     $assignNode = Node::load($node);
+     $assignNode->set('field_deliveryy', $d_date);
+     $assignNode->save();
+   }
+
+   // Comment 1 means close.
+   $node = Node::load($node_id);
+   $node->set("field_comment", 1);
+   $node->save();
+ }
+ else {
+   $commentID = $comment->id();
+   // Comment load
+   $comment2 = \Drupal::entityTypeManager()->getStorage('comment')->load($commentID);
+   // Approve the loaded comment.
+   $comment2->set('status', 1);
+   $comment2->save();
+ }
+}
 
 /**
  * Implements hook_entity_update()
@@ -206,10 +205,10 @@ function drupak_commerce_entity_update(Drupal\Core\Entity\EntityInterface $entit
     $node_id = $entity->get('entity_id')->getValue()[0]['target_id'];
     // kint($node_id);
     $nodeObject = Node::load($node_id);
-    $nodeFeatured = $nodeObject->get('field_featured')->getValue()[0]['value'];
+    $nodePaid = $nodeObject->get('field_paid')->getValue()[0]['value'];
     $nodeIssuePrice = $nodeObject->get('field_product_price')->getValue()['0'];
     $nodeAutherId = $nodeObject->get('uid')->getValue()[0]['target_id'];
-    if ($nodeFeatured == 'yes') {
+    if ($nodePaid == 'yes') {
       // Calculate the fee applied to the transaction.
       $fee_applied = \Drupal::service('commerce_funds.fees_manager')
         ->calculateTransactionFee($amount, $currency, 'transfer');
