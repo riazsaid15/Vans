@@ -343,28 +343,35 @@ class PrivateMessageService implements PrivateMessageServiceInterface {
       }
       $current_user = \Drupal::currentUser();
       if ($current_user->isAuthenticated()) {
+
         if ($current_user->hasPermission('use private messaging system') && $current_user->id() != $author->id()) {
           $members = [$current_user, $author];
           $thread_id = $this->mapper->getThreadIdForMembers($members);
-          if ($thread_id) {
-            $url = Url::fromRoute('entity.private_message_thread.canonical', ['private_message_thread' => $thread_id], ['attributes' => ['class' => ['private_message_link']]]);
-            $build['private_message_link'] = [
-              '#type' => 'link',
-              '#url' => $url,
-              '#title' => t('Send private message'),
-              '#prefix' => '<div class="private_message_link_wrapper">',
-              '#suffix' => '</div>',
-            ];
-          }
-          else {
-            $url = Url::fromRoute('private_message.private_message_create', [], ['query' => ['recipient' => $author->id()]]);
-            $build['private_message_link'] = [
-              '#type' => 'link',
-              '#url' => $url,
-              '#title' => t('Send private message'),
-              '#prefix' => '<div class="private_message_link_wrapper">',
-              '#suffix' => '</div>',
-            ];
+          $node = \Drupal::routeMatch()->getParameter('node');
+          $query = \Drupal::entityQuery('private_message')
+            ->condition('owner', $current_user->id())
+            ->condition('field_node_reference', $node->id());
+          $proporsel = $query->execute();
+          if (!$proporsel) {
+            if ($thread_id) {
+              $url = Url::fromRoute('entity.private_message_thread.canonical', ['private_message_thread' => $thread_id, 'nid' => $node->id()], ['attributes' => ['class' => ['private_message_link']]]);
+              $build['private_message_link'] = [
+                '#type' => 'link',
+                '#url' => $url,
+                '#title' => t('Send private message'),
+                '#prefix' => '<div class="private_message_link_wrapper">',
+                '#suffix' => '</div>',
+              ];
+            } else {
+              $url = Url::fromRoute('private_message.private_message_create', [], ['query' => ['recipient' => $author->id(), 'nid' => $node->id()],]);
+              $build['private_message_link'] = [
+                '#type' => 'link',
+                '#url' => $url,
+                '#title' => t('Send private message'),
+                '#prefix' => '<div class="private_message_link_wrapper">',
+                '#suffix' => '</div>',
+              ];
+            }
           }
         }
       }
@@ -373,7 +380,7 @@ class PrivateMessageService implements PrivateMessageServiceInterface {
         $build['private_message_link'] = [
           '#type' => 'link',
           '#url' => $url,
-          '#title' => t('Send private message'),
+          '#title' => t('SSend private message'),
           '#prefix' => '<div class="private_message_link_wrapper">',
           '#suffix' => '</div>',
         ];
