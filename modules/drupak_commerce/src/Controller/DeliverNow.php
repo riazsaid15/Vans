@@ -32,7 +32,7 @@ class DeliverNow extends ControllerBase {
 
     $node = Node::load($id);
     // Comment 2 means open.
-    $node->set("comment", 2);
+    $node->set("field_comment", 2);
     $node->save();
 
     $path = "entity:node/$id";

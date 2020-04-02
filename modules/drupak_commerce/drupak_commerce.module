@@ -16,15 +16,6 @@ use Drupal\commerce_funds\Entity\Transaction;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Drupal\Core\Url;
 
-/**
- * Implements hook_page_attachments().
- *
- * @param array $attachments
- */
-function drupak_commerce_page_attachments(array &$attachments) {
-  $attachments['#attached']['library'][] = 'drupak_commerce/library';
-
-}
 
 /**
  * @param $form
@@ -57,10 +48,11 @@ function drupak_commerce_form_alter(&$form, FormStateInterface $form_state, $for
  * @throws \Drupal\Core\Entity\EntityStorageException
  */
 function drupak_commerce_entity_insert(EntityInterface $entity) {
-  if ($entity->bundle() == "article") {
+  if ($entity->bundle() == "question") {
 
     $featured = $entity->get('field_featured')->getValue()[0]['value'];
-    if ($featured == 'yes') {
+    $paid = $entity->get('field_paid')->getValue()[0]['value'];
+    if ($paid == 'yes') {
       $nid = $entity->get('nid')->getValue()[0]['value'];
       $price = $entity->get('field_product_price')->getValue()[0]['number'];
       // $type = $entity->get('field_question_type')->getValue()[0]['value'];
@@ -141,7 +133,7 @@ function drupak_commerce_entity_insert(EntityInterface $entity) {
       $id = $entity->id();
       $nodeObject = Node::load($id);
       // Comment 2 means open.
-      $nodeObject->set("comment", 2);
+      $nodeObject->set("field_comment", 2);
       $nodeObject->save();
     }
   }
@@ -154,13 +146,17 @@ function drupak_commerce_entity_insert(EntityInterface $entity) {
  */
 function drupak_commerce_comment_links_alter(array &$links, CommentInterface $entity, array &$context) {
   // Unset the "Reply" link
-  if(isset($links['comment']['#links']['comment-approve'])) {
-    unset($links['comment']['#links']['comment-approve']);
+  if(isset($links['field_comment']['#links']['comment-approve'])) {
+    unset($links['field_comment']['#links']['comment-approve']);
   }
 }
 
 /**
  * @param $comment
+ *
+ * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+ * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+ * @throws \Drupal\Core\Entity\EntityStorageException
  */
 function drupak_commerce_comment_insert($comment) {
 
@@ -185,12 +181,12 @@ function drupak_commerce_comment_insert($comment) {
   }
 
   // Comment 1 means close.
-  $node->set("comment", 1);
+  $node->set("field_comment", 1);
   $node->save();
 } else {
   $commentID = $comment->id();
   // Comment load
-  $comment2 = \Drupal::entityTypeManager()->getStorage('comment')->load($commentID);
+  $comment2 = \Drupal::entityTypeManager()->getStorage('field_comment')->load($commentID);
   // Approve the loaded comment.
   $comment2->set('status', 1);
   $comment2->save();
