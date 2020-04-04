@@ -200,7 +200,7 @@ function drupak_commerce_comment_insert($comment) {
  * Implements hook_entity_update()
  */
 function drupak_commerce_entity_update(Drupal\Core\Entity\EntityInterface $entity) {
-  if ($entity->bundle() == 'comment') {
+  if ($entity->bundle() == 'answer') {
     $comment_author = $entity->get('uid')->getValue()[0]['target_id'];
     $node_id = $entity->get('entity_id')->getValue()[0]['target_id'];
     // kint($node_id);
