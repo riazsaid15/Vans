@@ -14,7 +14,9 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Drupal\state_machine\Event\WorkflowTransitionEvent;
 use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\commerce_funds\Entity\Transaction;
 use Drupal\node\Entity\Node;
+use Drupal\user\Entity\User;
 
 /**
  * Class QuestionPremiumOrderComplete
@@ -58,7 +60,7 @@ class QuestionPremiumOrderComplete implements EventSubscriberInterface {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function orderCompleteHandler(WorkflowTransitionEvent $event) {
-
+    $loginUserID = User::load(\Drupal::currentUser()->id());
     /** @var \Drupal\commerce_order\Entity\OrderInterface $order */
     $order = $event->getEntity();    // Order items in the cart.
     $items = $order->getItems();
@@ -72,20 +74,38 @@ class QuestionPremiumOrderComplete implements EventSubscriberInterface {
           // set featured field yes.
           $ask_ques_node = Node::load($ques_product->get('field_question_reference_to')
             ->referencedEntities()[0]->id());
-//          kint($ask_ques_node);
+         $nodePrice = $ask_ques_node->get('field_product_price')->getValue()['0'];
+
           $ask_ques_node->set('field_featured', 'yes');
           $ask_ques_node->save();
+
+          $fee_applied = \Drupal::service('commerce_funds.fees_manager')
+            ->calculateTransactionFee($amount, $currency, 'transfer');
+          // Create a new transaction.
+          $transaction = Transaction::create([
+            'issuer' => $loginUserID,
+            'recipient' => 1,
+            'type' => 'transfer',
+            'method' => 'internal',
+            'brut_amount' => $nodePrice['number'],
+            'net_amount' => $nodePrice['number'],
+            'fee' => $fee_applied['fee'],
+            'currency' => $nodePrice['currency_code'],
+            'status' => 'Completed',
+            'notes' => t('Transaction done'),
+          ]);
+          // Save the transaction to the db.
+          $transaction->save();
+
+          // Perform the transaction to update the differents balances.
+          \Drupal::service('commerce_funds.transaction_manager')
+            ->performTransaction($transaction);
         }
       }
     }
+
+
+
+
   }
-  //		$items = $order->getItems();
-  //
-  //		foreach ($order->getItems() as $key => $order_item) {
-  //
-  //			$product_variation = $order_item->getPurchasedEntity();
-  //			$products = $product_variation->get('product_id')->referencedEntities();
-  //			dump($porducts);
-  //		}
-  //	}
 }
