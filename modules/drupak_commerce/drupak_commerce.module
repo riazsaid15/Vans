@@ -54,6 +54,12 @@ function drupak_commerce_entity_insert(EntityInterface $entity) {
     $paid = $entity->get('field_paid')->getValue()[0]['value'];
     if ($paid == 'yes') {
       $nid = $entity->get('nid')->getValue()[0]['value'];
+      $nodeObject = Node::load($nid);
+      // Comment 1 means close.
+      $nodeObject->set("field_comment", 1);
+      $nodeObject->save();
+
+      $nid = $entity->get('nid')->getValue()[0]['value'];
       $price = $entity->get('field_product_price')->getValue()[0]['number'];
       // $type = $entity->get('field_question_type')->getValue()[0]['value'];
       $currency = $entity->get('field_product_price')
@@ -209,25 +215,40 @@ function drupak_commerce_entity_update(Drupal\Core\Entity\EntityInterface $entit
     $node_id = $entity->get('entity_id')->getValue()[0]['target_id'];
     // kint($node_id);
     $nodeObject = Node::load($node_id);
+    $node_owner_id = $nodeObject->getOwnerId();
+    $node_owner = $nodeObject->getOwner()->getDisplayName();
+    $node_title = $nodeObject->getTitle();
     $nodePaid = $nodeObject->get('field_paid')->getValue()[0]['value'];
     $nodeIssuePrice = $nodeObject->get('field_product_price')->getValue()['0'];
+    //    $netPrice = $nodeIssuePrice['number'] - ($nodeIssuePrice['number'] * 0.10);
     $nodeAutherId = $nodeObject->get('uid')->getValue()[0]['target_id'];
     if ($nodePaid == 'yes') {
       // Calculate the fee applied to the transaction.
       $fee_applied = \Drupal::service('commerce_funds.fees_manager')
-        ->calculateTransactionFee($amount, $currency, 'transfer');
+        ->calculateTransactionFee($nodeIssuePrice['number'], $currency, 'transfer');
+      $net_amount = $nodeIssuePrice['number']-$fee_applied['fee'];
+      kint($net_amount);
       // Create a new transaction.
       $transaction = Transaction::create([
-        'issuer' => $nodeAutherId,
+        'issuer' => 1,
         'recipient' => $comment_author,
         'type' => 'transfer',
         'method' => 'internal',
-        'brut_amount' => $nodeIssuePrice['number'],
-        'net_amount' => $nodeIssuePrice['number'],
+        'brut_amount' => $net_amount,
+        'net_amount' => $net_amount,
         'fee' => $fee_applied['fee'],
         'currency' => $nodeIssuePrice['currency_code'],
         'status' => 'Completed',
-        'notes' => t('Transaction done'),
+        'notes' => [
+          'value' => t('Payment of <a href="/vans/node/@item">@item-name</a> with Service Charges of @fee from <a href="/vans2/user/@owner_id">@owner</a> ', [
+            '@item-name' => $node_title,
+            '@item' => $node_id,
+            '@fee' => $fee_applied['fee'],
+            '@owner_id' => $node_owner_id,
+            '@owner' => $node_owner,
+          ]),
+          'format' => 'basic_html',
+        ]
       ]);
       // Save the transaction to the db.
       $transaction->save();

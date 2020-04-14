@@ -79,27 +79,27 @@ class QuestionPremiumOrderComplete implements EventSubscriberInterface {
           $ask_ques_node->set('field_featured', 'yes');
           $ask_ques_node->save();
 
-          $fee_applied = \Drupal::service('commerce_funds.fees_manager')
-            ->calculateTransactionFee($amount, $currency, 'transfer');
-          // Create a new transaction.
-          $transaction = Transaction::create([
-            'issuer' => $loginUserID,
-            'recipient' => 1,
-            'type' => 'transfer',
-            'method' => 'internal',
-            'brut_amount' => $nodePrice['number'],
-            'net_amount' => $nodePrice['number'],
-            'fee' => $fee_applied['fee'],
-            'currency' => $nodePrice['currency_code'],
-            'status' => 'Completed',
-            'notes' => t('Transaction done'),
-          ]);
-          // Save the transaction to the db.
-          $transaction->save();
-
-          // Perform the transaction to update the differents balances.
-          \Drupal::service('commerce_funds.transaction_manager')
-            ->performTransaction($transaction);
+//          $fee_applied = \Drupal::service('commerce_funds.fees_manager')
+//            ->calculateTransactionFee($amount, $currency, 'transfer');
+//          // Create a new transaction.
+//          $transaction = Transaction::create([
+//            'issuer' => $loginUserID,
+//            'recipient' => 1,
+//            'type' => 'transfer',
+//            'method' => 'internal',
+//            'brut_amount' => $nodePrice['number'],
+//            'net_amount' => $nodePrice['number'],
+//            'fee' => $fee_applied['fee'],
+//            'currency' => $nodePrice['currency_code'],
+//            'status' => 'Completed',
+//            'notes' => t('Transaction done'),
+//          ]);
+//          // Save the transaction to the db.
+//          $transaction->save();
+//
+//          // Perform the transaction to update the differents balances.
+//          \Drupal::service('commerce_funds.transaction_manager')
+//            ->performTransaction($transaction);
         }
       }
     }

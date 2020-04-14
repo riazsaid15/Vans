@@ -2,6 +2,7 @@
 
 namespace Drupal\commerce_funds\Plugin\Commerce\PaymentGateway;
 
+use Drupal\commerce_product\Entity\Product;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -15,6 +16,7 @@ use Drupal\commerce_payment\Plugin\Commerce\PaymentGateway\PaymentGatewayBase;
 use Drupal\commerce_funds\Entity\Transaction;
 use Drupal\commerce_store\Resolver\DefaultStoreResolver;
 use Drupal\commerce_funds\TransactionManager;
+use Drupal\node\Entity\Node;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -25,8 +27,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   label = @Translation("Funds balance"),
  *   display_label = @Translation("Funds balance"),
  *   forms = {
- *     "add-payment-method" = "Drupal\commerce_funds\PluginForm\Funds\BalanceMethodAddForm",
- *     "edit-payment-method" = "Drupal\commerce_funds\PluginForm\Funds\BalanceMethodAddForm",
+ *     "add-payment-method" =
+ *   "Drupal\commerce_funds\PluginForm\Funds\BalanceMethodAddForm",
+ *     "edit-payment-method" =
+ *   "Drupal\commerce_funds\PluginForm\Funds\BalanceMethodAddForm",
  *   },
  *   payment_method_types = {"funds_wallet"},
  * )
@@ -131,13 +135,27 @@ class BalanceGateway extends PaymentGatewayBase implements BalanceGatewayInterfa
    * @see createPaymentMethod()
    */
   protected function doPayment(PaymentMethodInterface $payment_method, PaymentInterface $payment) {
-    $order = \Drupal::service('current_route_match')->getParameter('commerce_order');
-
+    $order = \Drupal::service('current_route_match')
+      ->getParameter('commerce_order');
     foreach ($order->getItems() as $item) {
-      $fee = \Drupal::service('commerce_funds.fees_manager')->calculateTransactionFee($item->getTotalPrice()->getNumber(), $item->getTotalPrice()->getCurrencyCode(), 'payment');
+      // Code down added
+      $product = Product::load($item->getPurchasedEntityId());
+      $node_id = $product->get('field_question_reference_to')
+        ->getValue()[0]['target_id'];
+      $nodes = Node::load($node_id);
+      $node_title = $nodes->getTitle();
+      $node_owner_id = $nodes->getOwnerId();
+      $node_owner = $nodes->getOwner()->getDisplayName();;
+      // Code up added
+      $fee = \Drupal::service('commerce_funds.fees_manager')
+        ->calculateTransactionFee($item->getTotalPrice()
+          ->getNumber(), $item->getTotalPrice()->getCurrencyCode(), 'payment');
       $transaction = Transaction::create([
         'issuer' => $payment_method->getOwnerId(),
-        'recipient' => $item->getPurchasedEntity()->getOwnerId(),
+        // Code down added
+        //        'recipient' => $item->getPurchasedEntity()->getOwnerId(),
+        'recipient' => 1,
+        // Code up added
         'type' => 'payment',
         'method' => $payment_method->bundle(),
         'brut_amount' => $item->getTotalPrice()->getNumber(),
@@ -146,9 +164,16 @@ class BalanceGateway extends PaymentGatewayBase implements BalanceGatewayInterfa
         'currency' => $item->getTotalPrice()->getCurrencyCode(),
         'status' => 'Completed',
         'notes' => [
-          'value' => $this->t('Payment of <a href="/product/@item">@item-name</a> (order <a href="/user/@user/orders/@order">#@order</a>)', [
-            '@item-name' => $item->getTitle(),
-            '@item' => $item->getPurchasedEntityId(),
+          // Code down added
+          // link vans added
+          'value' => $this->t('Payment of <a href="vans/node/@item">@item-name</a> (from <a href="/vans2/user/@owner_id">@owner</a>)', [
+            '@item-name' => $node_title,
+            '@item' => $node_id,
+            '@owner_id' => $node_owner_id,
+            '@owner' => $node_owner,
+            //          '@item-name' => $item->getTitle(),
+            //          '@item' => $item->getPurchasedEntityId(),
+            // Code up added
             '@user' => $payment_method->getOwnerId(),
             '@order' => $payment->getOrderId(),
           ]),
