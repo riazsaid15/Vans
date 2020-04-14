@@ -15,6 +15,7 @@ use Drupal\private_message\Entity\PrivateMessageThreadInterface;
 use Drupal\private_message\Mapper\PrivateMessageMapperInterface;
 use Drupal\user\UserDataInterface;
 use Drupal\user\UserInterface;
+use Drupal\node\Entity\Node;
 
 /**
  * The Private Message service for the private message module.
@@ -348,11 +349,13 @@ class PrivateMessageService implements PrivateMessageServiceInterface {
           $members = [$current_user, $author];
           $thread_id = $this->mapper->getThreadIdForMembers($members);
           $node = \Drupal::routeMatch()->getParameter('node');
+          $nodeObject = Node::load($node->id());
+          $nodeFeatured = $nodeObject->get('field_featured')->getValue()[0]['value'];
           $query = \Drupal::entityQuery('private_message')
             ->condition('owner', $current_user->id())
             ->condition('field_node_reference', $node->id());
           $proporsel = $query->execute();
-          if (!$proporsel) {
+          if (!$proporsel && $nodeFeatured == 'yes') {
             if ($thread_id) {
               $url = Url::fromRoute('entity.private_message_thread.canonical', ['private_message_thread' => $thread_id, 'nid' => $node->id()], ['attributes' => ['class' => ['private_message_link']]]);
               $build['private_message_link'] = [
@@ -375,12 +378,12 @@ class PrivateMessageService implements PrivateMessageServiceInterface {
           }
         }
       }
-      else {
+      elseif ($nodeFeatured == 'yes') {
         $url = Url::fromRoute('user.login');
         $build['private_message_link'] = [
           '#type' => 'link',
           '#url' => $url,
-          '#title' => t('SSend private message'),
+          '#title' => t('Send private message'),
           '#prefix' => '<div class="private_message_link_wrapper">',
           '#suffix' => '</div>',
         ];
