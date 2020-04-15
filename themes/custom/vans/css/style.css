@@ -2,4 +2,79 @@
  * @file
  * Subtheme specific CSS.
  */
+ body p {
+     font-size: 14px;
+     color: #707885;
+     line-height: 24px;
+ }
+ #page, #content {
+    background-color: #f7f7f7 !important;
+}
+ #sidebar_first,
+ #sidebar_second {
+     background: #f7f7f7;
+ }
 
+<<<<<<< HEAD
+=======
+ body p {
+     font-size: 14px;
+     color: #707885;
+     line-height: 24px;
+ }
+>>>>>>> 177dd395ba6f1473411bec816d3baeb769dcf406
+
+ .middle-quetion .user-img a {
+     width: 50px;
+     height: 50px;
+     overflow: hidden;
+     border: 2px solid orange;
+     border-radius: 50%;
+     display: block;
+     box-shadow: inset 0 0 10px #000000;
+     position: relative;
+ }
+ .middle-quetion .user-img a img {
+<<<<<<< HEAD
+     transform: scale(1.2);
+     max-width: 100%;
+     height: auto;
+ }
+ .middle-quetion h6 > a {
+=======
+    transform: scale(1.2);
+    max-width: 100%;
+    height: auto;
+}
+.middle-quetion h6 > a {
+>>>>>>> 177dd395ba6f1473411bec816d3baeb769dcf406
+    color: #212529;
+}
+.middle-quetion .time {
+    font-size: 11px;
+    color: darkgray;
+<<<<<<< HEAD
+}
+=======
+} 
+>>>>>>> 177dd395ba6f1473411bec816d3baeb769dcf406
+.middle-quetion .badge-info {
+    background: white;
+    border: 1px solid #eeeeee;
+}
+.middle-quetion .badge-info a {
+    color: #888888;
+    font-weight: normal;
+}
+<<<<<<< HEAD
+.middle-quetion .front-question-info span {
+    color: #949494;
+    font-weight: bold;
+    font-size: 12px;
+}
+.middle-quetion .front-question-info span a {
+    font-weight: bold;
+    font-size: 12px;
+}
+=======
+>>>>>>> 177dd395ba6f1473411bec816d3baeb769dcf406

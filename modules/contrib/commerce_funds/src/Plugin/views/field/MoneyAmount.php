@@ -18,6 +18,7 @@ class MoneyAmount extends NumericField {
    * {@inheritdoc}
    */
   public function preRender(&$values) {
+	
     foreach ($values as $key => $row) {
       if ($row->_entity->bundle() == 'conversion') {
         $values[$key]->transaction_currency_symbol = $row->_entity->getCurrency()->getSymbol();

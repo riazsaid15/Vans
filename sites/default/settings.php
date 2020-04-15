@@ -756,9 +756,9 @@ $settings['entity_update_backup'] = TRUE;
 #   include $app_root . '/' . $site_path . '/settings.local.php';
 # }
 $databases['default']['default'] = array (
-  'database' => 'vans',
+  'database' => 'riazvans',
   'username' => 'root',
-  'password' => '',
+  'password' => 'ahmad@1234',
   'prefix' => '',
   'host' => 'localhost',
   'port' => '3306',

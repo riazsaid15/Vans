@@ -49,17 +49,23 @@ function drupak_commerce_form_alter(&$form, FormStateInterface $form_state, $for
  */
 function drupak_commerce_entity_insert(EntityInterface $entity) {
   if ($entity->bundle() == "question") {
-
     $featured = $entity->get('field_featured')->getValue()[0]['value'];
     $paid = $entity->get('field_paid')->getValue()[0]['value'];
     if ($paid == 'yes') {
       $nid = $entity->get('nid')->getValue()[0]['value'];
+<<<<<<< HEAD
+=======
+
+>>>>>>> 177dd395ba6f1473411bec816d3baeb769dcf406
       $nodeObject = Node::load($nid);
       // Comment 1 means close.
       $nodeObject->set("field_comment", 1);
       $nodeObject->save();
 
+<<<<<<< HEAD
       $nid = $entity->get('nid')->getValue()[0]['value'];
+=======
+>>>>>>> 177dd395ba6f1473411bec816d3baeb769dcf406
       $price = $entity->get('field_product_price')->getValue()[0]['number'];
       // $type = $entity->get('field_question_type')->getValue()[0]['value'];
       $currency = $entity->get('field_product_price')
