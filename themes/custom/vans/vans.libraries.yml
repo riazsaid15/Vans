@@ -1,11 +1,15 @@
 global-styling:
   version: VERSION
   js:
+    js/modal.js: {}
     js/global.js: {}
+    js/myscript.js: {}
   css:
     component:
+      css/micromodal.css: {}
       css/style.css: {}
       css/colors.css: {}
+      css/riaz.css: {}
 bootstrap:
   js:
     /libraries/popper.js/dist/umd/popper.min.js: {}
