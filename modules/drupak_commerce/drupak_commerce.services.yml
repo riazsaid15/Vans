@@ -1,0 +1,9 @@
+services:
+  # Name of the service.
+  question_premium_order_complete:
+    # Event subscriber class that will listen for the events.
+    class: Drupal\drupak_commerce\EventSubscriber\QuestionPremiumOrderComplete
+    # Tagged as an order_complete to register this subscriber with the event_dispatch service.
+    arguments: ['@entity_type.manager']
+    tags:
+      - { name: 'event_subscriber' }

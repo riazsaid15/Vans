@@ -1,0 +1,262 @@
+.nopadding {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.question {
+    position: relative; }
+    .question > .col .badge {
+      font-weight: normal; }
+    .question > .col h5 {
+      font-size: 14px;
+      margin: 0 15px 0 0;
+      font-weight: bold;
+      margin-bottom: 0 !important; }
+      .question > .col h5 a {
+        color: #2d6ff7;
+        font-weight: 700;
+        letter-spacing: 0.8px;
+        transition: color 0.3s ease-in-out; }
+        .question > .col h5 a:hover {
+          color: #26333b;
+          text-decoration: none; }
+    .question > .col h6 {
+      font-size: 11px;
+      margin: 10px 15px;
+      color: #2d6ff7; }
+      .question > .col h6 b {
+        color: darkgray;
+        font-weight: normal; }
+    .question > .col h4 {
+      padding-right: 50px; }
+      .question > .col h4 a {
+        margin-bottom: 15px;
+        font-size: 19px;
+        line-height: 27px;
+        color: #272930;
+        font-weight: 700;
+        transition: color 0.2s ease; }
+        .question > .col h4 a:hover {
+          color: #2d6ff7;
+          text-decoration: none; }
+      @media screen and (max-width: 768px) {
+        .question > .col h4 {
+          padding-right: 0px; } }
+    .question > .col p {
+      font-size: 14px;
+      color: #707885;
+      line-height: 24px; }
+    .question > .col > .col-12 .badge-info {
+      background: white;
+      border: 1px solid #eeeeee;
+      border-radius: 1px;
+      color: #707885; }
+      .question > .col > .col-12 .badge-info:hover {
+        background: orange; }
+      .question > .col > .col-12 .badge-info:hover a {
+        color: white;
+        text-decoration: none; }
+      .question > .col > .col-12 .badge-info a {
+        color: #888888; }
+    .question > .col .viwes-comments-count {
+      border-color: 1px solid darkgray;
+      background: #F5F5F5; }
+      .question > .col .viwes-comments-count .badge {
+        color: #707885;
+        background: white;
+        border: 1px solid #dfdfdf;
+        font-size: 11px;
+        letter-spacing: 1px; }
+        .question > .col .viwes-comments-count .badge i {
+          margin-right: 5px; }
+        .question > .col .viwes-comments-count .badge svg {
+          margin-right: 5px; }
+      .question > .col .viwes-comments-count .btn {
+        font-size: 12px;
+        font-weight: bold;
+        color: #fff; }
+    .question .pinned-box {
+      position: absolute;
+      width: 85px;
+      height: 85px;
+      color: white;
+      top: 0;
+      right: 15px;
+      border-top: 1px solid orange;
+      border-right: 1px solid orange;
+      overflow: hidden; }
+      .question .pinned-box div {
+        font-size: 14px;
+        font-weight: bold;
+        text-align: center;
+        -webkit-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
+        position: relative;
+        padding: 3px 0;
+        left: -15px;
+        top: 15px;
+        width: 127px;
+        background-color: orange; }
+    .question .user-img a {
+      width: 50px;
+      height: 50px;
+      overflow: hidden;
+      border: 2px solid orange;
+      border-radius: 50%;
+      display: block;
+      box-shadow: inset 0 0 10px #000000;
+      position: relative;
+      margin: auto; }
+      .question .user-img a:before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: -1px;
+        right: -1px;
+        bottom: -1px;
+        border: 3px solid white;
+        border-radius: 50%;
+        z-index: 1; }
+      .question .user-img a img {
+        transform: scale(1.2);
+        max-width: 100%;
+        height: auto; }
+    .question .tub p {
+      margin-bottom: 0;
+      font-size: 12px; }
+      .question .tub p svg {
+        margin-right: 8px; }
+    .question .video {
+      margin-bottom: 20px; }
+      .question .video iframe {
+        width: 100%; }
+
+.answer .comment-vote b {
+  margin-right: 10px;
+  font-weight: 600;
+  color: gray; }
+
+.answer .comment-vote i {
+  color: gray;
+  font-size: 22px;
+  margin-right: 10px; }
+
+.answer p {
+  margin-right: 50px; }
+@media screen and (max-width: 768px) {
+  .answer p {
+    margin-right: 0px; } }
+
+@media screen and (max-width: 768px) {
+  .answer .col h6 {
+    margin-right: 50px; } }
+
+.tags-view-block .tags-item {
+  display: inline-flex;
+  margin: 0; }
+.tags-view-block .tags-item h6 {
+  border: 1px solid gainsboro;
+  background: #fbfbfb;
+  font-size: 14px;
+  border-radius: 2px;
+  padding: 2px 6px;
+  margin: 7px 1px;
+  color: #868686;
+  transition: all 0.2s ease; }
+.tags-view-block .tags-item h6:hover {
+  color: #707070;
+  background: #f2f2f2; }
+
+.comment p {
+  font-size: 14px;
+  color: #707885;
+  line-height: 24px; }
+
+.comment .field--name-user-picture a {
+  width: 50px;
+  height: 50px;
+  overflow: hidden;
+  border: 2px solid orange;
+  border-radius: 50%;
+  display: block;
+  box-shadow: inset 0 0 10px #000000;
+  position: relative; }
+.comment .field--name-user-picture a:before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  border: 3px solid white;
+  border-radius: 50%;
+  z-index: 1; }
+.comment .field--name-user-picture a img {
+  transform: scale(1.2);
+  max-width: 100%;
+  height: auto; }
+
+.comment .comment__content:after {
+  display: none; }
+
+.comment .comment__content:before {
+  display: none; }
+
+.comment .comment__content nav a {
+  font-size: 14px;
+  color: gray;
+  border: 1px solid #dbdbdb;
+  padding: 3px 9px;
+  border-radius: 16px;
+  transition: all 0.2s ease-in-out; }
+.comment .comment__content nav a:before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  margin-right: 5px; }
+.comment .comment__content nav a:hover {
+  background-color: #fbfbfb; }
+
+.comment .comment__content nav .js-ajax-comments-reply:before {
+  content: "\f3e5"; }
+
+.comment .comment__content nav .js-ajax-comments-edit:before {
+  content: "\f044"; }
+
+.comment .comment__content nav .js-ajax-comments-delete:before {
+  content: "\f2ed"; }
+
+
+  .user-dp {
+    height: 300px;
+    background-color: #dbd8cf; }
+    .user-dp svg {
+      width: 28px !important;
+      margin: 0;
+      padding: 0;
+      font-size: 23px; }
+    .user-dp .profile-img a {
+      width: 170px;
+      height: 170px;
+      overflow: hidden;
+      border: 2px solid orange;
+      border-radius: 50%;
+      display: block;
+      box-shadow: inset 0 0 10px #000000;
+      position: relative; }
+      .user-dp .profile-img a:before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: -1px;
+        right: -1px;
+        bottom: -1px;
+        border: 4px solid white;
+        border-radius: 50%;
+        z-index: 1; }
+      .user-dp .profile-img a img {
+        transform: scale(1.2);
+        max-width: 100%;
+        height: auto; }
+  

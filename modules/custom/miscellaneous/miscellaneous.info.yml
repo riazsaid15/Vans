@@ -1,0 +1,5 @@
+name: Miscellaneous
+description: Custome miscellaneous module
+type: module
+core: 8.x
+package: Custom

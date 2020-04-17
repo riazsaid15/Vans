@@ -1,0 +1,25 @@
+drupak_commerce.assign:
+  path: '/assign-to/{id}'
+  defaults:
+    _controller: '\Drupal\drupak_commerce\Controller\QuestionAssign::assignTo'
+    _title: 'Question Assign To'
+  requirements:
+    _permission: 'access content'
+    id: \d+
+  options:
+    paramenters:
+      id:
+        type: entity:private_message
+
+drupak_commerce.deliver:
+  path: '/deliver/{id}'
+  defaults:
+    _controller: '\Drupal\drupak_commerce\Controller\DeliverNow::deliver'
+    _title: 'Deliver Now'
+  requirements:
+    _permission: 'access content'
+    id: \d+
+  options:
+    paramenters:
+      id:
+        type: entity:node

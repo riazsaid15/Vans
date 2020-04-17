@@ -1,0 +1,120 @@
+{#
+/**
+ * @file
+ * Theme override to display all the fields in a row.
+ *
+ * Available variables:
+ * - view: The view in use.
+ * - fields: A list of fields, each one contains:
+ *   - content: The output of the field.
+ *   - raw: The raw data for the field, if it exists. This is NOT output safe.
+ *   - class: The safe class ID to use.
+ *   - handler: The Views field handler controlling this field.
+ *   - inline: Whether or not the field should be inline.
+ *   - wrapper_element: An HTML element for a wrapper.
+ *   - wrapper_attributes: List of attributes for wrapper element.
+ *   - separator: An optional separator that may appear before a field.
+ *   - label: The field's label text.
+ *   - label_element: An HTML element for a label wrapper.
+ *   - label_attributes: List of attributes for label wrapper.
+ *   - label_suffix: Colon after the label.
+ *   - element_type: An HTML element for the field content.
+ *   - element_attributes: List of attributes for HTML element for field content.
+ *   - has_label_colon: A boolean indicating whether to display a colon after
+ *     the label.
+ *   - element_type: An HTML element for the field content.
+ *   - element_attributes: List of attributes for HTML element for field content.
+ * - row: The raw result from the query, with all data it fetched.
+ *
+ * @see template_preprocess_views_view_fields()
+ */
+#}
+{{ fields.edit_profile.content }}
+
+<div class="container-fluid">
+    {{fields.field_wallpaper.content }}
+    <div class="row user-dp" style="background-image: url({{fields.field_wallpaper.content }}); ">
+        <div class=" container">
+            <div class="row user-dp  align-items-end">
+                <div class="col">
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="row">
+                                <div class="col-auto profile-img">
+
+                                    <a href="#">
+                                        {{ fields.user_picture.content }}
+                                    </a>
+                                </div>
+                                <div class="col text-light d-flex align-items-center px-0">
+                                    <div class="col px-0 ">
+
+                                        <h3 class="d-inline-block text-light">{{ fields.name.content }} </h3> <i class="fas fa-clipboard-check px-2"></i>
+                                        <span class="badge badge-success rounded-0 border-0">{{ fields.roles_target_id.content }}</span>
+                                        <p> {{ fields.field_designation.content }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6  mb-3 align-items-center d-flex">
+                            <span class="btn btn-light mr-3 text-secondary rounded-0"><i class="far fa-question-circle"></i> 6 Question</span>
+                            <span class="btn btn-light mr-3 text-secondary rounded-0"><i class="fas fa-reply-all"></i> {{ fields.comment_count.content }} Answers </span>
+                            <a href="{{ fields.edit_profile.content }}" class="btn btn-light mr-3 text-light bg-primary rounded-0"><i class="fas fa-user-edit"></i> Update Profile</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container-fluid">
+    <div class="row user-dp" style="background-image: url(" {{ field_wallpaper }}"); ">
+            <div class=" container">
+        <div class="row user-dp  align-items-end">
+            <div class="col">
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="row">
+                            <div class="col-auto profile-img">
+
+                                <a href="#">
+                                    {{ user_picture }}
+                                </a>
+                            </div>
+                            <div class="col text-light d-flex align-items-center px-0">
+                                <div class="col px-0 ">
+
+                                    <h3 class="d-inline-block text-light">{{ name }} </h3> <i class="fas fa-clipboard-check px-2"></i>
+                                    <span class="badge badge-success rounded-0 border-0">{{ roles_target_id }}</span>
+                                    <p> {{ field_designation }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6  mb-3 align-items-center d-flex">
+                        <span class="btn btn-light mr-3 text-secondary rounded-0"><i class="far fa-question-circle"></i> 6 Question</span>
+                        <span class="btn btn-light mr-3 text-secondary rounded-0"><i class="fas fa-reply-all"></i> {{ comment_count }} Answers </span>
+
+
+                        {% if logged_in %}
+
+                        <a href="#" class="btn btn-success mr-3 text-light bg-primary rounded-0"><i class="fas fa-reply-all"></i> Hire me</a>
+                        {% else %}
+
+
+                        <a href="{{ edit_profile }}" class="btn btn-light mr-3 text-light bg-primary rounded-0"><i class="fas fa-user-edit"></i> Update Profile</a>
+
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
