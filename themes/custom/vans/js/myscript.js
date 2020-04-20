@@ -19,7 +19,14 @@
            debugMode: true // [9]
         });
 
-        
+
+        //APpend Vote to main Question Section
+        jQuery(".middle-quetion").each(function (id, doEle) {
+          var t = jQuery(this).find(".vote-result p").text();
+          jQuery(this).find(".append-vote  p").text(t);
+        });
+       $('.vote-result p').hide();
+
        }
     };
 })(jQuery, Drupal);
