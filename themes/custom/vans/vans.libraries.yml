@@ -4,6 +4,7 @@ global-styling:
     js/modal.js: {}
     js/global.js: {}
     js/myscript.js: {}
+    js/my.js: {}
   css:
     component:
       css/micromodal.css: {}

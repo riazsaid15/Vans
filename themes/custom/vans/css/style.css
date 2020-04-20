@@ -2,6 +2,16 @@
  * @file
  * Subtheme specific CSS.
  */
+
+ :root {
+   --main-bg-color: red;
+   --menu-color: #666;
+   --link-color: #37a000;
+   --solid-thin-border: 1px solid #e0e0e0;
+   --green-dark: #35840c;
+ }
+
+
  body p {
      font-size: 14px;
      color: #707885;
@@ -17,8 +27,64 @@
  .form-control, .form-text {
     border-radius: 0;
 }
+fieldset.js-form-item.js-form-type-search.form-type-search.js-form-item-keys.form-item-keys.form-no-label.form-group.col-auto,
+.form-group {
+  margin-bottom: 0;
+}
 
+/* Start Head Section */
+#search-block-form {
+    padding: 0 !important;
+    border: var(--solid-thin-border);
+    transition: ease-in all 0.5s;
+}
+#search-block-form:hover {
+  box-shadow: inset 0 0 5px rgba(0,0,0,.3);
+  border-color: var(--link-color);
+}
+#search-block-form #edit-keys {
+    margin-top: 0 !important;
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
+}
+#search-block-form #edit-keys::placeholder {
+  color: var(--link-color);
+}
+#search-block-form .btn-search button {
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
+    color: var(--link-color);
+}
+.main-menu li a {
+    font-weight: 300;
+    color: var(--menu-color);
+}
+.nav-link:focus,
+.nav-link:hover {
+  color: var(--link-color);
+}
+#dLabel {
+    margin: 0 10px;
+    padding-top: 4px;
+    display: inline-block;
+}
+#dLabel svg {
+  color: var(--link-color) !important;
+}
 
+.btn-site-link {
+  background-color: var(--link-color);
+  color: #fff;
+  border: none;
+  border-radius: 0;
+}
+.btn-site-link:hover {
+  background-color: var(--green-dark);
+  color: #fff;
+}
+/* End Head Section */
  .middle-quetion .user-img a {
      width: 50px;
      height: 50px;
@@ -66,7 +132,9 @@
     max-width: 800px;
     max-height: 95vh;
 }
-
+.text-answer {
+  color: var(--link-color);
+}
 /* Start Sidebar First */
 /* Start Tag Block */
 .tags-view-block .tags-item h6 {

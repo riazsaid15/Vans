@@ -11,9 +11,9 @@ use Drupal\Core\Form\FormStateInterface;
  * Implements hook_form_system_theme_settings_alter() for settings form.
  *
  * Replace Barrio setting options with subtheme ones.
- * 
+ *
  * Example on how to alter theme settings form
- * 
+ *
  */
 function vans_form_system_theme_settings_alter(&$form, FormStateInterface $form_state) {
   $form['components']['navbar']['bootstrap_barrio_navbar_top_background']['#options'] = array(
@@ -32,4 +32,73 @@ function vans_form_system_theme_settings_alter(&$form, FormStateInterface $form_
       'bg-white' => t('White'),
       'bg-transparent' => t('Transparent'),
   );
+}
+
+/**
+   * Implements hook_theme_suggestions_alter
+   */
+  function vans_theme_suggestions_alter(array &$suggestions, array $variables) {
+    if (isset($variables['element']) && isset($variables['element']['#type']) && $variables['element']['#type'] == 'form') {
+      $original_theme_hook = $variables['theme_hook_original'];
+      $suggestions[] = $original_theme_hook . '__' . str_replace('-', '_', $variables['element']['#id']);
+    }
+
+  }
+
+
+ /**
+  * @param $form
+  * @param \Drupal\Core\Form\FormStateInterface $form_state
+  * @param $form_id
+  */
+ function vans_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+   if ($form_id == 'search_block_form') {
+     $form['actions']['submit']['#attributes']['data-twig-suggestion'] = 'search_results_submit';
+     $form['actions']['submit']['#attributes']['class'][] = 'search-box__button';
+   }
+ }
+
+
+/**
+ * @param $suggestions
+ * @param array $variables
+ */
+function vans_theme_suggestions_input_alter(&$suggestions, array $variables) {
+  $element = $variables['element'];
+  if (isset($element['#attributes']['data-twig-suggestion'])) {
+    $suggestions[] = 'input__' . $element['#type'] . '__' . $element['#attributes']['data-twig-suggestion'];
+  }
+}
+
+function vans_form_search_block_form_alter(&$form, FormStateInterface $form_state) {
+  $form['keys']['#attributes']['placeholder'] = t('Search');
+}
+
+function vans_preprocess_page(&$variables) {
+  // You will most likely want to show and render the form for anonymous users.
+  $variables['login_form'] = FALSE;
+  if (!\Drupal::currentUser()->id()) {
+    $form = Drupal::formBuilder()->getForm(Drupal\user\Form\UserLoginForm::class) ;
+    $render = Drupal::service('renderer');
+    $variables['login_form'] = $render->renderPlain($form);
+  }
+
+    $entity = \Drupal::entityTypeManager()->getStorage('user')->create(array());
+    $formObject = \Drupal::entityTypeManager()
+      ->getFormObject('user', 'register')
+      ->setEntity($entity);
+    $form = \Drupal::formBuilder()->getForm($formObject);
+    $variables['register_form'] = \Drupal::service('renderer')->render($form);
+}
+
+
+function vans_user_login($account){
+    $url = "/";
+    $resp = new Symfony\Component\HttpFoundation\RedirectResponse($url);
+    $resp->send();
+    return;
+}
+function vans_preprocess(&$vars, $hook)
+{
+$vars['uid'] = \Drupal::currentUser()->id();
 }
