@@ -1,0 +1,17 @@
+helper.admin_toolbar_tools.flush_php:
+  title: 'Flush PHP'
+  route_name: helper.flush_php
+  parent: admin_toolbar_tools.flush
+  menu_name: admin
+
+helper.admin_toolbar_tools.flush_libraries:
+  title: 'Flush libraries'
+  route_name: helper.flush_libraries
+  parent: admin_toolbar_tools.flush
+  menu_name: admin
+
+helper.admin_toolbar_tools.flush_bootstrap:
+  title: 'Flush bootstrap'
+  route_name: helper.flush_bootstrap
+  parent: admin_toolbar_tools.flush
+  menu_name: admin

@@ -1,0 +1,10 @@
+services:
+  helper.commands.cache:
+    class: \Drupal\helper\Commands\CacheCommands
+    tags:
+      - { name: drush.command }
+  helper.commands.module:
+    class: \Drupal\helper\Commands\ModuleCommands
+    arguments: ['@module_handler']
+    tags:
+        - { name: drush.command }

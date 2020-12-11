@@ -36,11 +36,12 @@
 <h4>
     {{ base_url }}
 </h4>
+{#
 {% if logged_in %}
-<a href="#" class="btn btn-site-link p-md-0 col-md-12 col-5  mr-md-0 mr-2 mx-lg-4" data-custom-open="modal-1" role="button">
+ <a href="#" class="btn btn-site-link p-md-0 col-md-12 col-5  mr-md-0 mr-2 mx-lg-4" data-custom-open="modal-1" role="button">
     Asks Question
-</a>
-<a href="user/" class="btn btn-site-link p-md-0 col-md-12 col-5  ml-md-0 ml-2 mx-lg-4"> View Profile</a>
+</a> 
+ <a href="user/" class="btn btn-site-link p-md-0 col-md-12 col-5  ml-md-0 ml-2 mx-lg-4"> View Profile</a>
 
 {% else %}
 <a href="#" class="btn btn-primary p-0" data-custom-open="modal-2" role="button">
@@ -49,7 +50,7 @@
 
 
 {% endif %}
-
+#}
 <span>
     <p>Questions</p><b> {{ fields.type_1.content }} </b>
 </span>

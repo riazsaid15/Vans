@@ -289,7 +289,7 @@ $settings['hash_salt'] = 'dxro2CAp_xGv_3F1MxHFK5JG_X2J1zhs3RtybyCBy4PeDeRVSaDM-_
  * After finishing the upgrade, be sure to open this file again and change the
  * TRUE back to a FALSE!
  */
-$settings['update_free_access'] = FALSE;
+$settings['update_free_access'] = TRUE;
 
 /**
  * External access proxy settings:
@@ -756,9 +756,9 @@ $settings['entity_update_backup'] = TRUE;
 #   include $app_root . '/' . $site_path . '/settings.local.php';
 # }
 $databases['default']['default'] = array (
-  'database' => 'riazvans',
+  'database' => 'vans2',
   'username' => 'root',
-  'password' => 'ahmad@1234',
+  'password' => '',
   'prefix' => '',
   'host' => 'localhost',
   'port' => '3306',

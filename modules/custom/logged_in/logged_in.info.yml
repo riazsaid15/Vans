@@ -1,0 +1,5 @@
+name: logged_in
+type: module
+description: Checks if user is logged in within Views fields
+core: 8.x
+package: Custom

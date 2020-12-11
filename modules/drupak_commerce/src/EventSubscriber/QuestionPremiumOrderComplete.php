@@ -79,6 +79,17 @@ class QuestionPremiumOrderComplete implements EventSubscriberInterface {
           $ask_ques_node->set('field_featured', 'yes');
           $ask_ques_node->save();
 
+
+        // Redirect to home page
+          $path = "internal:/";
+          // Choose a path.
+          $url = Url::fromUri($path);
+          $destination = $url->toString();
+          // ksm($destination);
+          // We want to redirect user on login.
+          $response = new RedirectResponse($destination, 301);
+          $response->send();
+
 //          $fee_applied = \Drupal::service('commerce_funds.fees_manager')
 //            ->calculateTransactionFee($amount, $currency, 'transfer');
 //          // Create a new transaction.
@@ -100,6 +111,17 @@ class QuestionPremiumOrderComplete implements EventSubscriberInterface {
 //          // Perform the transaction to update the differents balances.
 //          \Drupal::service('commerce_funds.transaction_manager')
 //            ->performTransaction($transaction);
+        }
+        if ($prod->bundle() == 'deposit') {
+          // Redirect to home page
+          $path = "internal:/";
+          // Choose a path.
+          $url = Url::fromUri($path);
+          $destination = $url->toString();
+          // ksm($destination);
+          // We want to redirect user on login.
+          $response = new RedirectResponse($destination, 301);
+          $response->send();
         }
       }
     }

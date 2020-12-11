@@ -1,0 +1,29 @@
+helper.flush_php:
+  path: '/admin/flush/php'
+  defaults:
+    _controller: '\Drupal\helper\Controller\ToolbarController::flushPhp'
+    _title: 'Flush PHP'
+  requirements:
+    _permission: 'administer site configuration'
+    _csrf_token: 'TRUE'
+    _module_dependencies: 'admin_toolbar_tools'
+
+helper.flush_libraries:
+  path: '/admin/flush/libraries'
+  defaults:
+    _controller: '\Drupal\helper\Controller\ToolbarController::flushLibraries'
+    _title: 'Flush libraries'
+  requirements:
+    _permission: 'administer site configuration'
+    _csrf_token: 'TRUE'
+    _module_dependencies: 'admin_toolbar_tools'
+
+helper.flush_bootstrap:
+  path: '/admin/flush/bootstrap'
+  defaults:
+    _controller: '\Drupal\helper\Controller\ToolbarController::flushBootstrap'
+    _title: 'Flush bootstrap'
+  requirements:
+    _permission: 'administer site configuration'
+    _csrf_token: 'TRUE'
+    _module_dependencies: 'admin_toolbar_tools'

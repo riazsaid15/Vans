@@ -1,4 +1,5 @@
-<div class="private-message-notification-wrapper {{ unread_notification_class }}">
-  <img src="{{ notification_image_path }}" class="private-message-notification-image" />
-  {{ private_message_page_link }}
+<div class="private-message-notification-wrapper pt-1 {{ unread_notification_class }}">
+{#  <img src="{{ notification_image_path }}" class="private-message-notification-image" />#}
+{#  {{ private_message_page_link }}#}
+  <i class="fas fa-bell fa-lg bell-icon">&nbsp;</i><span class="new-notifications ">{{ private_message_page_link }}</span>
 </div>

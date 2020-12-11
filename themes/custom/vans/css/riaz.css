@@ -75,54 +75,7 @@
         font-size: 12px;
         font-weight: bold;
         color: #fff; }
-    .question .pinned-box {
-      position: absolute;
-      width: 85px;
-      height: 85px;
-      color: white;
-      top: 0;
-      right: 15px;
-      border-top: 1px solid orange;
-      border-right: 1px solid orange;
-      overflow: hidden; }
-      .question .pinned-box div {
-        font-size: 14px;
-        font-weight: bold;
-        text-align: center;
-        -webkit-transform: rotate(45deg);
-        -moz-transform: rotate(45deg);
-        -ms-transform: rotate(45deg);
-        -o-transform: rotate(45deg);
-        position: relative;
-        padding: 3px 0;
-        left: -15px;
-        top: 15px;
-        width: 127px;
-        background-color: orange; }
-    .question .user-img a {
-      width: 50px;
-      height: 50px;
-      overflow: hidden;
-      border: 2px solid orange;
-      border-radius: 50%;
-      display: block;
-      box-shadow: inset 0 0 10px #000000;
-      position: relative;
-      margin: auto; }
-      .question .user-img a:before {
-        content: "";
-        position: absolute;
-        top: -1px;
-        left: -1px;
-        right: -1px;
-        bottom: -1px;
-        border: 3px solid white;
-        border-radius: 50%;
-        z-index: 1; }
-      .question .user-img a img {
-        transform: scale(1.2);
-        max-width: 100%;
-        height: auto; }
+    
     .question .tub p {
       margin-bottom: 0;
       font-size: 12px; }
@@ -264,7 +217,7 @@
 /* Ishfaq notification design*/
 .new-notification {
   position: absolute;
-  top: 6px;
+  top: 0px;
   left: 26px; }
 
 .fa-bell {
@@ -291,9 +244,10 @@ span.we-megamenu-nolink {
 
 /* Notification block designing */
 .dropdown {
-  display: inline-block;
+  /* display: inline-block;
   margin-left: 20px;
-  padding: 10px; }
+  padding: 10px; */
+ }
 
 .notifications {
   min-width: 420px; }
@@ -351,3 +305,516 @@ span.we-megamenu-nolink {
 
 button.ief-entity-submit.button.js-form-submit.form-submit.btn.btn-primary {
   margin-bottom: 5px; }
+  
+  /*user skill profile*/
+  .profile header {
+  width: 100%; }
+
+.profile .profile-labels {
+  color: #23A567 !important;
+  position: relative; }
+  .profile .profile-labels::after {
+    content: " ";
+    width: 75px;
+    height: 7px;
+    background: #23A567;
+    position: absolute;
+    bottom: -22px;
+    border-bottom-right-radius: 10px;
+    left: 0; }
+    
+.row-offcanvas-left main#content {
+    padding: 0;
+}
+
+/*table style*/
+  /* Zebra striping */
+  tr:nth-of-type(odd) { 
+    background: #eee !important; 
+    }
+    tr:nth-of-type(odd) { 
+      background: rgb(255, 255, 255) !important; 
+      }
+    /*.table-hover tbody tr:hover {*/
+    /*background-color: rgba(0,0,0,0.001) !important;*/
+    /*}*/
+    
+  tr {
+    border-bottom: .1px solid #f7f5f5 !important;
+    padding: 0.1em 0.6em !important;
+    background: #ffffff !important;
+    /* background: rgba(0, 0, 0, 0.063); */
+  }
+  td.priority-medium.views-field.views-field-brut-amount-1.views-align-right {
+    float: right;
+    font-weight: bold;
+    color: #28B873;
+  }
+  
+  th { 
+    background: #ffffff !important;
+    color: #252323 !important;
+    font-weight: bold !important;
+    }
+  th#view-brut-amount-1-table-column {
+    float: right;
+    border-bottom: .1px solid #f7f5f5 !important;
+  }
+  
+  .table-hover tbody tr:hover {
+    background-color: rgba(0,0,0,0.015) !important;
+  }
+  
+  td.views-field.views-field-counter.views-align-center.text-center, td.views-field.views-field-counter{
+    text-align: center!important;
+  }
+  
+  td, th { 
+    padding: 16px 10px !important;
+    border: 0px !important; 
+    }
+
+    div#block-userbalance-2 {
+      padding: 5px 8px;
+  }
+  
+  .block-login-user-block ul{
+      padding: 0 .5rem;
+  }
+  
+  /*Countdown big size*/
+  .question span.countdown-section{
+    padding: 1rem;
+}
+
+
+    /* Private message notification icon*/
+.block-private-message-notification-block .unread-threads .private-message-page-link {
+  color: #ffffff !important;
+}
+
+.block-private-message-notification-block .private-message-page-link {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: -3px !important;
+  left: 8px !important;
+  text-align: center;
+  line-height: 26px;
+  color: #000;
+  font-size: xx-small !important;
+}
+
+/* CKeditor height*/
+div#cke_1_contents {
+    height: 40px !important;
+}
+
+
+/*Private message main page*/
+h1.js-quickedit-page-title.title {
+    display: none;
+}
+.path-private-messages h1.title {
+    display: none;
+}
+.private-message-wrapper,.private-message-default {
+  display: inline-block;
+  padding: 0 0 0 10px;
+  vertical-align: top;
+  width: 92%;
+}
+.private-message-author-other p {
+  background: #ebebeb none repeat scroll 0 0;
+  border-radius: 3px;
+  color: #646464;
+  font-size: 14px;
+  margin: 0;
+  padding: 5px 10px 5px 12px;
+  width: 100%;
+  text-transform: capitalize;
+}
+.private-message-author-other p a{
+    font-weight: bold;
+}
+ .field.field--name-created.field--type-created.field--label-visually_hidden .field__item,.field--name-field-delivery,.field--name-field-node-reference {
+  color: #747474;
+  display: block;
+  font-size: 12px;
+  margin: 8px 0 0;
+}
+.private-message-inbox .field.field--name-created.field--type-created.field--label-visually_hidden .field__item {
+  color: #747474;
+  display: block;
+  font-size: 12px;
+  margin: 8px 0 0;
+  padding-top: 9px;
+  padding-left: 71%;
+}
+.commented_date {
+  color: #747474;
+  display: block;
+  font-size: 12px;
+}
+.private-message-default.private-message-author-other { width: 57%;}
+.private_message {
+  float: left;
+  padding: 30px 15px 0 25px;
+  width: 60%;
+  background-color: white!important;
+}
+.private-message-thread-inbox .private-message-recipients{
+  background: #ebebeb none repeat scroll 0 0;
+  border-radius: 3px;
+  font-size: 14px;
+  margin: 0;
+  color:#646464;
+  padding: 5px 10px 5px 12px;
+  float: left;
+  margin-top: 4px;
+  margin-left: 14px;
+}
+.private-message-recipients {
+    justify-content: center!important;
+    padding-top: 15px;
+    font-size: 15px;
+    text-transform: capitalize;
+}
+.private-message-recipients a{
+    font-weight: bold;
+}
+
+.private-message-inbox .field.field--name-owner.field--type-entity-reference.field--label-inline {
+    float: left;
+}
+.private-message-inbox .clearfix.text-formatted.field.field--name-message.field--type-text-long.field--label-visually_hidden{
+    padding-top:1rem;
+}
+.private-message-author-self p {
+  background: #ebebeb none repeat scroll 0 0;
+  border-radius: 3px;
+  font-size: 14px;
+  margin: 0;
+  color:#646464;
+  padding: 5px 10px 5px 12px;
+  width:100%;
+  text-transform: capitalize;
+}
+.private-message-author-self p a{
+  font-weight: bold;
+}
+div#private-message-page {
+  background-color: white;
+}
+.private-message-wrapper{ overflow:hidden; margin:26px 0 26px;}
+.private-message-default.private-message-author-self {
+  float: right;
+  width: 46%;
+}
+#private-message-page .private-message-thread-full .field--name-private-messages .private-message {
+ border: none !important;
+}
+.field.field--name-field-delivery {
+  float: left;
+}
+.field.field--name-field-node-reference {
+  float: right;
+}
+.private-message-add-form {border-top: 1px solid #c4c4c4;position: relative;}
+
+.field.field--name-owner.field--type-entity-reference.field--label-inline {
+    margin-bottom: 6px !important;
+}
+select#edit-field-delivery {
+    width:60% !important;
+}
+.private-message-add-form div#edit-field-delivery-wrapper {
+    float: right;
+    margin-bottom:0px!important;
+}
+div#edit-message-wrapper {
+    margin-bottom: 1.5rem;
+}
+/* Inbox message thread hover color*/
+.block-private-message-inbox-block .private-message-thread:hover {
+    background-color: white;
+}
+.private-message-add-form div#edit-actions {
+    display: inline-block;
+}
+.block-private-message-inbox-block .private-message-thread {
+    border:none !important;
+    
+}
+/* comment and private message input*/
+div#edit-comment-body-0-format {
+    display: none !important;
+}
+div#edit-body-0-format {
+    display: none !important;
+}
+div#edit-message-0-format {
+    display: none !important;
+}
+.private-message-add-form{
+        padding: 29px 0px !important;
+}
+
+.row .dropdown {
+    top: -2px;
+}
+img.private-message-notification-image {
+    top: 2px !important;
+}
+
+/*comment icon*/
+.new-notifications {
+    position: absolute;
+    top: -1px;
+    left: 16px;
+}
+
+.fa-bell {
+  font-size: 30px !important; }
+
+.new-notifications a {
+  color: white !important; }
+  
+.block-private-message-notification-block {
+    width: 39.75px !important;
+    position: relative;
+    overflow: inherit;
+}
+
+/*Banking Payment designing*/
+.layout-region-checkout-footer {
+    padding-top: 1rem;
+}
+
+fieldset.js-form-item.js-form-type-entity-autocomplete.form-type-entity-autocomplete.js-form-item-field-node-reference-0-target-id.form-item-field-node-reference-0-target-id.disabled.form-group.col-auto {
+    display: none;
+}
+
+/* Relation edit form css*/
+form#node-relation-edit-form {
+    padding: 2rem 0rem !important;
+}
+form#node-relation-edit-form .col.layout-region-node-footer {
+    padding: 1rem !important;
+}
+
+/*confirm order view*/
+/*==================================================
+  Nearby People CSS
+  ==================================================*/
+
+.people-nearby .google-maps{
+  background: #f8f8f8;
+  border-radius: 4px;
+  border: 1px solid #f1f2f2;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.people-nearby .google-maps .map{
+  height: 300px;
+  width: 100%;
+  border: none;
+}
+
+.people-nearby .nearby-user{
+  padding: 20px 0;
+  border-top: 1px solid #f1f2f2;
+  border-bottom: 1px solid #f1f2f2;
+  margin-bottom: 20px;
+}
+
+img.profile-photo-lg{
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+}
+
+.node-question-form .form-type-textarea label {
+    display:none !important;
+}
+
+.node-question-form .form-type-textarea{
+   padding: 0px !important;
+    margin: 1rem 0px;
+}
+
+.field--name-field-tag label {
+    display: none;
+}
+div.autocomplete-deluxe-throbber {
+    width: 16px;
+    padding: 0px 10px;
+    margin: 8px 0px;
+    display: flex;
+    height: 50%;
+    float: left;
+}
+.autocomplete-deluxe-container.ui-sortable.autocomplete-deluxe-multiple {
+    border: none;
+    background: #f1f1f1 !important;
+}
+input#autocomplete-deluxe-input {
+    width: 60px !important;
+    margin: 0px 0px 0px 2px !important;
+}
+div#edit-field-paid-wrapper {
+    margin-top: 10px;
+    /*margin-bottom: 10px;*/
+}
+div#edit-field-product-price-wrapper {
+    margin-bottom: 10px;
+}
+
+/* hide comment login or register links*/
+span.comment-forbidden.nav-link {
+    display: none;
+}
+
+/* Checkout flow designing*/
+.checkout-pane-payment-information span.fieldset-legend {
+    display: none;
+}
+div#edit-review {
+    padding: 20px 17px 0px 17px;
+}
+fieldset#edit-review-payment-information {
+    display: none;
+}
+.layout-checkout-form a.link--previous {
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    background-color: #37a000;
+    border-color: #37a000;
+    color: #fff;
+    cursor: pointer;
+}
+.layout-checkout-form a.link--previous:hover, .layout-checkout-form a.link--previous:focus{
+    background-color: #2b7c01;
+    text-decoration: none;
+}
+div#edit-actions {
+    padding-top: 10px;
+}
+.block-page-title-block h1.title {
+    padding: 16px;
+}
+/*div#edit-payment-information-billing-information {*/
+/*    display: none;*/
+/*}*/
+input#edit-field-product-price-0-number {
+    margin: auto 10px;
+    width: 40%;
+    display: inline-block;
+}
+fieldset.js-form-item.js-form-type-commerce-number.form-type-commerce-number.js-form-item-field-product-price-0-number.form-item-field-product-price-0-number.form-group.col-auto {
+    width: 100%;
+}
+h2#modal-1-title {
+    color: green !important;
+}
+
+/* Ask question design*/
+fieldset.js-form-item.js-form-type-select.form-type-select.js-form-item-field-paid.form-item-field-paid.form-group.col-auto {
+  
+  /*float: left;*/
+  width: 33%;
+  margin-bottom: 1rem;
+}
+select#edit-field-paid {
+  width: 50%;
+  margin: 0px 10px;
+  border-radius: 0px;
+}
+fieldset.js-form-item.js-form-type-commerce-number.form-type-commerce-number.js-form-item-field-product-price-0-number.form-item-field-product-price-0-number.form-group.col-auto {
+  width: 40%;
+  position: relative;
+  top: -56px;
+  float: right;
+}
+
+form#node-question-form input::placeholder, form#node-question-form textarea::placeholder{
+    opacity: .5;
+}
+
+/* Own Question page design */
+fieldset.js-form-item.js-form-type-select.form-type-select.js-form-item-field-paid-value.form-item-field-paid-value.form-group.col-auto {
+    width: auto !important;
+}
+#views-exposed-form-recent-question-page-5 label {
+    padding: 0px .5rem 0px 1rem;
+
+}
+select#edit-field-paid-value {
+    border-radius: 0px !important;
+    width: auto !important;
+}
+div#edit-actions {
+    padding: 0px 5px 1rem .5rem;
+}
+button#edit-submit-recent-question {
+    border-radius: 0px !important;
+}
+nav {
+    margin: 0 auto !important;
+}
+/*end*/
+/* Dropdown design*/
+
+.dropdown-item.active, .dropdown-item:active {
+    color: #28B873 !important;
+    text-decoration: none !important;
+    background-color: transparent !important;
+}
+a:hover, a:focus, a:active {
+    color: #28b873 !important;
+    text-decoration: none;
+}
+a.nav-link.active.is-active, a.active.is-active{
+    color: #28b873 !important;
+}
+button#edit-submit {
+    border-radius: 0px;
+    margin: .5rem;
+}
+button#edit-submit--2,button#edit-submit-commerce-funds-user-transactions {
+    border-radius: 0px;
+}
+
+#views-exposed-form-commerce-funds-user-transactions-issued-transactions .form-row {
+    float: right;
+    padding: 0rem 1rem 0rem 0rem;
+}
+/*end*/
+
+/* User page designing*/
+ul.nav.nav-tabs.primary {
+    justify-content: center;
+}
+.block-local-actions-block nav li a {
+    background-color: #28B873;
+    border-color: #28B873;
+    border-radius: 0px;
+}
+.block-local-actions-block nav li a:hover {
+    color: #fff !important;
+    background-color: #23a567;
+    border-color: #23a567;
+}

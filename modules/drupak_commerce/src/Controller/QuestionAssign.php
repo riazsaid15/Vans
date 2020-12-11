@@ -83,7 +83,7 @@ class QuestionAssign extends ControllerBase {
 
     // Add a Message to the thread.
     $private_message = PrivateMessage::create();
-    $private_message->set('owner', $user2);
+    $private_message->set('owner', $user1);
     // $linkText = 'Node Title';
     //    $linkMarkup = Markup::create($linkText);
     //    $link = Link::fromTextAndUrl($linkMarkup, Url::fromUri('entity:node/1'));

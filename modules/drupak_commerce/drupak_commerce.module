@@ -12,7 +12,8 @@ use Drupal\commerce_product\Entity\Product;
 use Drupal\commerce_price\Price;
 use Drupal\node\Entity\Node;
 use Drupal\commerce_funds\Entity\Transaction;
-
+use Drupal\private_message\Entity\PrivateMessage;
+use Drupal\user\Entity\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Drupal\Core\Url;
 
@@ -27,6 +28,12 @@ use Drupal\Core\Url;
 function drupak_commerce_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   // kint($form_id);
   // kint($form['comment']['widget'][0]['status']['#default_value']);
+
+  if ($form_id == 'node_relation_edit_form') {
+    $form['revision_information']['#access'] = false;
+  }
+
+
   if ($form_id == 'private_message_add_form') {
 
     $value = \Drupal::request()->query->get('nid');
@@ -38,6 +45,32 @@ function drupak_commerce_form_alter(&$form, FormStateInterface $form_state, $for
     $form['field_node_reference']['widget'][0]['target_id']['#attributes']['disabled'] = 'disabled';
   }
 
+    // add custom validation function.
+  if($form_id == "node_question_form") {
+    $form['#validate'][] = '_user_amount_validate';
+  }
+}
+
+// custom validation function
+function _user_amount_validate(&$form, FormStateInterface $form_state) {
+
+  $paid = $form_state->getValue('field_paid')[0]['value'];
+  if($paid == 'yes' && $form_state->hasValue('field_product_price')) {
+    $productPrice = $form_state->getValue('field_product_price');
+    $currentUser= \Drupal::currentUser();
+    // Get the user account balance
+    $balance = \Drupal::service('commerce_funds.transaction_manager')->loadAccountBalance($currentUser);
+    if ($balance) {
+      foreach ($balance as $currency => $amount) {
+        if ($productPrice[0]['number'] > $amount) {
+          $form_state->setErrorByName('field_product_price', t('You don\'t have enough balance to post a question.'));
+        }
+      }
+    }
+    else{
+      $form_state->setErrorByName('field_product_price', t('You have $0 in your account, please deposit!'));
+    }
+  }
 }
 
 /**
@@ -164,9 +197,33 @@ function drupak_commerce_comment_links_alter(array &$links, CommentInterface $en
 * @throws \Drupal\Core\Entity\EntityStorageException
 */
 function drupak_commerce_comment_insert($comment) {
+    
+$node_id = $comment->get('entity_id')->getValue()[0]['target_id'];
+ $node = Node::load($node_id);
+ 
+ $user_comment = $comment->get('uid')->getValue()[0]['target_id'];
+ $user_node = $node->get('uid')->getValue()[0]['target_id'];
+///////////////////////////////////////////////////////////////////////////////////////////////
+// Send private message notification to node user
 
- $node_id = $comment->get('entity_id')->getValue()[0]['target_id'];
+$user1 = User::load($user_comment);
+$user2 = User::load($user_node);
 
+$members = [$user1, $user2];
+  $service = \Drupal::service('private_message.service');
+
+  // This will create a thread if one does not exist.  
+  $private_message_thread = $service->getThreadForMembers($members);
+
+  // Add a Message to the thread.
+  $private_message = PrivateMessage::create();
+  $private_message->set('owner', $user1);
+  $private_message->set('message', 'Order has been completed');
+  $private_message->save();
+  $private_message_thread->addMessage($private_message)->save();
+ 
+ ///////////////////////////////////////////////////////////////////////////////////////////////
+ 
  $node = Node::load($node_id);
  $nodePaid = $node->get('field_paid')->getValue()[0]['value'];
  if ($nodePaid == 'yes') {
@@ -210,22 +267,28 @@ function drupak_commerce_comment_insert($comment) {
 function drupak_commerce_entity_update(Drupal\Core\Entity\EntityInterface $entity) {
   if ($entity->bundle() == 'answer') {
     $comment_author = $entity->get('uid')->getValue()[0]['target_id'];
+    $comment_status = $entity->get('status')->getValue()[0]['value'];
     $node_id = $entity->get('entity_id')->getValue()[0]['target_id'];
     // kint($node_id);
     $nodeObject = Node::load($node_id);
     $node_owner_id = $nodeObject->getOwnerId();
     $node_owner = $nodeObject->getOwner()->getDisplayName();
     $node_title = $nodeObject->getTitle();
-    $nodePaid = $nodeObject->get('field_paid')->getValue()[0]['value'];
+    $nodeFeatured = $nodeObject->get('field_featured')->getValue()[0]['value'];
     $nodeIssuePrice = $nodeObject->get('field_product_price')->getValue()['0'];
     //    $netPrice = $nodeIssuePrice['number'] - ($nodeIssuePrice['number'] * 0.10);
     $nodeAutherId = $nodeObject->get('uid')->getValue()[0]['target_id'];
-    if ($nodePaid == 'yes') {
+    if ($nodeFeatured == 'yes' && $comment_status == 'True') {
+
+      // Node Featured field updated to complete.
+      $nodeObject->set('field_featured', 'completed');
+      $nodeObject->save();
+
       // Calculate the fee applied to the transaction.
       $fee_applied = \Drupal::service('commerce_funds.fees_manager')
         ->calculateTransactionFee($nodeIssuePrice['number'], $currency, 'transfer');
       $net_amount = $nodeIssuePrice['number']-$fee_applied['fee'];
-      kint($net_amount);
+
       // Create a new transaction.
       $transaction = Transaction::create([
         'issuer' => 1,
@@ -233,7 +296,7 @@ function drupak_commerce_entity_update(Drupal\Core\Entity\EntityInterface $entit
         'type' => 'transfer',
         'method' => 'internal',
         'brut_amount' => $net_amount,
-        'net_amount' => $net_amount,
+        'net_amount' => $nodeIssuePrice['number'],
         'fee' => $fee_applied['fee'],
         'currency' => $nodeIssuePrice['currency_code'],
         'status' => 'Completed',
@@ -254,6 +317,25 @@ function drupak_commerce_entity_update(Drupal\Core\Entity\EntityInterface $entit
       // Perform the transaction to update the differents balances.
       \Drupal::service('commerce_funds.transaction_manager')
         ->performTransaction($transaction);
+
+      // Sending order complete notification
+      $user1 = User::load($node_owner_id);
+      $user2 = User::load($comment_author);
+      $user1_name = $user1->getUsername();
+      $members = [$user1, $user2];
+      $service = \Drupal::service('private_message.service');
+
+      // This will create a thread if one does not exist.
+      $private_message_thread = $service->getThreadForMembers($members);
+
+      // Add a Message to the thread.
+      $private_message = PrivateMessage::create();
+      $private_message->set('owner', $user1);
+      $msg = t("Congrats you have Earned $net_amount from Question $node_title");
+
+      $private_message->set('message', $msg);
+      $private_message->save();
+      $private_message_thread->addMessage($private_message)->save();
     }
   }
 }

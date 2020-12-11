@@ -11,7 +11,7 @@
  * @ingroup themeable
  */
 #}
-<ul>
+{# <ul>
   {% if balance %}
     {% for currency, amount in balance %}
         <li>{{ amount|e }} {{ currency }}</li>
@@ -19,4 +19,12 @@
   {% else %}
     {{ 'No funds yet, '|t }}<a href="{{ path('commerce_funds.deposit') }}">{{ 'make your first deposit!'|t }}</a>
   {% endif %}
-</ul>
+</ul> #}
+
+  {% if balance %}
+    {% for currency, amount in balance %}
+        <a class="btn btn-site-link btn-sm" role="button" href="{{ path('commerce_funds.deposit') }}">{{ amount|e }} {{ currency }}</a>
+    {% endfor %}
+  {% else %}
+    <a class="btn btn-site-link btn-sm" role="button" href="{{ path('commerce_funds.deposit') }}">{{ '$0, Load Balance'|t }}</a>
+  {% endif %}

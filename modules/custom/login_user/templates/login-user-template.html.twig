@@ -1,0 +1,37 @@
+
+{% set module_path = _self|split('/templates') %}
+{{ attach_library('login_user/login_user_styling') }}
+
+{% if user_id is not empty %}
+<div class="">
+  <ul>
+    <li class="login-user-wrapper">
+      <div class="login-user-picture">
+        {% if user_img is not empty %}
+          <img src="{{ user_img }}" />
+        {% else %}
+          <img src="{{ site_path ~ module_path[0] }}/images/default-pictures.jpg" alt="" />
+        {% endif %}
+      </div>
+      <ul class="login-user-dropdown">
+        <li>
+          <div class="login-user-block">
+            <div class="login-user-info">
+              <p class="username"><b>{{ user_name }}</b></p>
+              <p class="useremail">{{ user_email }}</p>
+            </div>
+            <div class="login-user-logout">
+              <span><a class="btn btn-sm btn-default" href="{{ site_path }}user/{{ user_id }}">View Profile</a></span>
+              <span><a class="btn btn-sm btn-default" href="{{ site_path }}user/logout">Logout</a></span>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+{% else %}
+  <div class="">
+    <a class="btn btn-sm btn-site-link mt-1 ml-3" href="#" data-custom-open="modal-2" role="button">Login/Register</a>
+  </div>
+{% endif %}

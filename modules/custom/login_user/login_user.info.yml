@@ -1,0 +1,7 @@
+name: Login User Block
+description: Show the login user image
+type: module
+core: 8.x
+package: Vans
+dependencies:
+  - block

@@ -1,0 +1,9 @@
+login_user_styling:
+  version: 1.x
+  css:
+    theme:
+      css/login-user.css: {}
+  js:
+    js/login-user.js: {}
+  dependencies:
+    - core/jquery

@@ -87,9 +87,11 @@
       server which comments are new for the user. Rendering the final "new"
       indicator here would break the render cache.
       #}
-      <span class="hidden text-danger" data-comment-timestamp="{{ new_indicator_timestamp }}"></span>
+     {# <span class="hidden text-danger" data-comment-timestamp="{{ new_indicator_timestamp }}"></span> #}
       {{ user_picture }}
-
+      <div class="answer-vote">
+        {{ content.field_answe }}
+      </div>
       <!--            <small class="comment__author"></small>-->
       {#
       Indicate the semantic relationship between parent and child comments
@@ -105,7 +107,7 @@
       </div>
     </div>
 
-    <div {{ content_attributes.addClass(['comment__content', 'col', 'pl-4']) }}>
+    <div {{ content_attributes.addClass(['comment__content', 'col-sm-11', 'pl-4']) }}>
       <div class="pb-3 ">
         <div class="comment-info">
           <p class="h5"><b class="mr-2">{{ author }}</b> Posted on: {{ created }}</p>

@@ -26,6 +26,12 @@
           jQuery(this).find(".append-vote  p").text(t);
         });
        $('.vote-result p').hide();
+        
+        $(document).once('drupalanwsers').ready(function() {
+            var href = $('.private_message_link_wrapper a').attr('href');
+            $('.submit-proposal a').attr("href", href);
+        });
+        
 
        }
     };

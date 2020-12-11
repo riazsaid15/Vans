@@ -93,7 +93,7 @@
 
             <nav {{ navbar_attributes }}>
                 {% if container_navbar %}
-                <div class="container">
+                <div class="container-fluid">
                     {% endif %}
                     {{ page.header }}
                     {% if page.primary_menu or page.header_form %}
@@ -115,9 +115,6 @@
                                 <div class="col-md-2 offset-md-1">
                                     <div class="user-menu">
                                         {{ page.secondary_menu }}
-                                        {% if logged_in %}
-                                        <span><a class="btn btn-sm btn-primary" href="user/logout">Logout</a></span>
-                                        {% endif %}
                                     </div>
                                 </div>
                                 {% endif %}
@@ -272,16 +269,16 @@
       <div class="text-center text-md-left mx-sm-auto text-white">
         <!-- Grid row -->
         <div class="row">
-            <div class="col-lg-6 col-md-6 mx-auto px-5 text-center mb-4">
+            <div class="col-md-3 col-sm-6 mx-auto px-5 text-center mb-4">
               {{ page.footer_first }}
             </div>
-            <div class="col-lg-2 col-md-6 mx-auto mb-4">
+            <div class="col-md-3 col-sm-6 mx-auto mb-4">
               {{ page.footer_second }}
             </div>
-             <div class="col-lg-2 col-md-6 mx-auto mb-md-0 mb-4">
+             <div class="col-md-3 col-sm-6 mx-auto mb-md-0 mb-4">
               {{ page.footer_third }}
             </div>
-            <div class="col-lg-2 col-md-6 mx-auto mb-md-0 mb-4">
+            <div class="col-md-3 col-sm-6 mx-auto mb-md-0 mb-4">
               {{ page.footer_fourth }}
             </div>
         </div>

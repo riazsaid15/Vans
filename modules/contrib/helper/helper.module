@@ -1,0 +1,30 @@
+<?php
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Url;
+use Drupal\layout_builder\Entity\LayoutEntityDisplayInterface;
+
+/**
+ * Implements hook_entity_operation().
+ */
+function helper_entity_operation(EntityInterface $entity) {
+  $operations = [];
+
+  if ($entity instanceof FieldableEntityInterface && \Drupal::moduleHandler()->moduleExists('layout_builder')) {
+    /** @var \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display */
+    $entity_type_id = $entity->getEntityTypeId();
+    $display = \Drupal::entityTypeManager()
+      ->getStorage('entity_view_display')
+      ->load($entity_type_id . '.' . $entity->bundle() . '.' . 'default');
+    if ($display && $display instanceof LayoutEntityDisplayInterface && $display->isOverridable()) {
+      $operations['layout'] = [
+        'title' => t('Layout'),
+        'weight' => 50,
+        'url' => Url::fromRoute('layout_builder.overrides.' . $entity_type_id . '.view', [$entity_type_id => $entity->id()]),
+      ];
+    }
+  }
+
+  return $operations;
+}
